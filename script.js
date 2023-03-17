@@ -30,24 +30,28 @@ async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
 
     // Use the AllOrigins proxy to avoid CORS policy issues
     const proxyUrl = 'https://api.allorigins.win/raw?url=';
-    const searchUrl = `${proxyUrl}http://www.omdbapi.com/?s=${keyword1}+${keyword2}+${keyword3}&type=movie&apikey=${apiKey}`;
 
-    const searchResponse = await fetch(searchUrl);
-    const searchData = await searchResponse.json();
+    const keywords = [keyword1, keyword2, keyword3];
 
-    if (searchData.Response === 'True' && searchData.Search.length > 0) {
-        const movieId = searchData.Search[0].imdbID;
-        const movieDetailsUrl = `${proxyUrl}http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
-        const detailsResponse = await fetch(movieDetailsUrl);
-        const detailsData = await detailsResponse.json();
+    for (const keyword of keywords) {
+        const searchUrl = `${proxyUrl}http://www.omdbapi.com/?s=${keyword}&type=movie&apikey=${apiKey}`;
+        const searchResponse = await fetch(searchUrl);
+        const searchData = await searchResponse.json();
 
-        return {
-            title: detailsData.Title,
-            year: detailsData.Year,
-            plot: detailsData.Plot,
-            imdbRating: detailsData.imdbRating
-        };
-    } else {
-        return null;
+        if (searchData.Response === 'True' && searchData.Search.length > 0) {
+            const movieId = searchData.Search[0].imdbID;
+            const movieDetailsUrl = `${proxyUrl}http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
+            const detailsResponse = await fetch(movieDetailsUrl);
+            const detailsData = await detailsResponse.json();
+
+            return {
+                title: detailsData.Title,
+                year: detailsData.Year,
+                plot: detailsData.Plot,
+                imdbRating: detailsData.imdbRating
+            };
+        }
     }
+
+    return null;
 }
