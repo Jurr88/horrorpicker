@@ -26,7 +26,7 @@ async function getMovieRecommendation() {
 async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
     // Replace with your OMDb API key
     const apiKey = 'a34859c9';
-    const apiUrl = `http://www.omdbapi.com/?s=${keyword1}+${keyword2}+${keyword3}&type=movie&apikey=${apiKey}`;
+    const apiUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=a34859c9`;
 
     const response = await fetch(apiUrl);
     const data = await response.json();
