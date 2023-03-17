@@ -26,14 +26,17 @@ async function getMovieRecommendation() {
 async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
     // Replace with your OMDb API key
     const apiKey = 'a34859c9';
-    const apiUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=a34859c9`;
 
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    // Use the CORS Anywhere proxy to avoid CORS policy issues
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const searchUrl = `${proxyUrl}http://www.omdbapi.com/?s=${keyword1}+${keyword2}+${keyword3}&type=movie&apikey=${apiKey}`;
 
-    if (data.Response === 'True' && data.Search.length > 0) {
-        const movieId = data.Search[0].imdbID;
-        const movieDetailsUrl = `http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
+    const searchResponse = await fetch(searchUrl);
+    const searchData = await searchResponse.json();
+
+    if (searchData.Response === 'True' && searchData.Search.length > 0) {
+        const movieId = searchData.Search[0].imdbID;
+        const movieDetailsUrl = `${proxyUrl}http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
         const detailsResponse = await fetch(movieDetailsUrl);
         const detailsData = await detailsResponse.json();
 
