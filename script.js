@@ -38,11 +38,15 @@ async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
         const searchResponse = await fetch(searchUrl);
         const searchData = await searchResponse.json();
 
+        console.log(`Search data for keyword '${keyword}':`, searchData); // Log search data
+
         if (searchData.Response === 'True' && searchData.Search.length > 0) {
             const movieId = searchData.Search[0].imdbID;
             const movieDetailsUrl = `${proxyUrl}http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
             const detailsResponse = await fetch(movieDetailsUrl);
             const detailsData = await detailsResponse.json();
+
+            console.log(`Details data for movie '${movieId}':`, detailsData); // Log details data
 
             return {
                 title: detailsData.Title,
