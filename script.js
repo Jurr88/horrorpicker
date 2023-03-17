@@ -28,8 +28,8 @@ async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
     // Replace with your OMDb API key
     const apiKey = 'a34859c9';
 
-    // Use the CORS Anywhere proxy to avoid CORS policy issues
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    // Use the AllOrigins proxy to avoid CORS policy issues
+    const proxyUrl = 'https://api.allorigins.win/raw?url=';
     const searchUrl = `${proxyUrl}http://www.omdbapi.com/?s=${keyword1}+${keyword2}+${keyword3}&type=movie&apikey=${apiKey}`;
 
     const searchResponse = await fetch(searchUrl);
