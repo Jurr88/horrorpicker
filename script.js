@@ -19,6 +19,7 @@ async function getMovieRecommendation() {
             resultDiv.innerHTML = "No movie found. Please try different keywords.";
         }
     } catch (error) {
+        console.error(error); // Log the error to the console
         resultDiv.innerHTML = "An error occurred. Please try again.";
     }
 }
