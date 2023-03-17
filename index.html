@@ -80,6 +80,27 @@ async function getMovieRecommendation() {
 }
 
 async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
-    // Replace YOUR_API_KEY with your actual API key from The Movie Database
-    const apiKey = 'YOUR_API_KEY';
-    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${keyword1}+${
+    // Replace with your OMDb API key
+    const apiKey = 'a34859c9';
+    const apiUrl = `http://www.omdbapi.com/?s=${keyword1}+${keyword2}+${keyword3}&type=movie&apikey=${apiKey}`;
+
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.Response === 'True' && data.Search.length > 0) {
+        const movieId = data.Search[0].imdbID;
+        const movieDetailsUrl = `http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
+        const detailsResponse = await fetch(movieDetailsUrl);
+        const detailsData = await detailsResponse.json();
+
+        return {
+            title: detailsData.Title,
+            year: detailsData.Year,
+            plot: detailsData.Plot,
+            imdbRating: detailsData.imdbRating
+        };
+    } else {
+        return null;
+    }
+}
+
