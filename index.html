@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Movie Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #333;
+            color: white;
+        }
+        #container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        #keywords {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 10px;
+            border: 2px solid #777;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #555;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Horror Movie Recommender</h1>
+        <p>Enter three keywords to find a horror movie:</p>
+        <div id="keywords">
+            <input type="text" id="keyword1" placeholder="Keyword 1">
+            <input type="text" id="keyword2" placeholder="Keyword 2">
+            <input type="text" id="keyword3" placeholder="Keyword 3">
+        </div>
+        <button onclick="getMovieRecommendation()">Find Movie</button>
+        <div id="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+// script.js
+async function getMovieRecommendation() {
+    const keyword1 = document.getElementById('keyword1').value;
+    const keyword2 = document.getElementById('keyword2').value;
+    const keyword3 = document.getElementById('keyword3').value;
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = "Searching...";
+
+    try {
+        const movie = await fetchHorrorMovie(keyword1, keyword2, keyword3);
+        if (movie) {
+            resultDiv.innerHTML = `
+                <h2>${movie.title} (${movie.year})</h2>
+                <p>${movie.plot}</p>
+                <p>IMDb Rating: ${movie.imdbRating}</p>
+            `;
+        } else {
+            resultDiv.innerHTML = "No movie found. Please try different keywords.";
+        }
+    } catch (error) {
+        resultDiv.innerHTML = "An error occurred. Please try again.";
+    }
+}
+
+async function fetchHorrorMovie(keyword1, keyword2, keyword3) {
+    // Replace YOUR_API_KEY with your actual API key from The Movie Database
+    const apiKey = 'YOUR_API_KEY';
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${keyword1}+${
